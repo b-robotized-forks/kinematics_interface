@@ -381,13 +381,6 @@ bool KinematicsInterfaceIKFast::convert_cartesian_pose_to_possible_joint_states(
   return true;
 }
 
-bool KinematicsInterfaceIKFast::convert_joint_state_to_cartesian_pose(
-  const std::vector<double> & joint_state, Eigen::Isometry3d & pose)
-{
-  Eigen::VectorXd joint_pos = Eigen::Map<const Eigen::VectorXd>(
-    joint_state.data(), static_cast<Eigen::Index>(joint_state.size()));
-  return calculate_link_transform(joint_pos, end_effector_name_, pose);
-}
 
 bool KinematicsInterfaceIKFast::verify_initialized()
 {
@@ -438,7 +431,7 @@ bool KinematicsInterfaceIKFast::verify_jacobian_inverse(
 }
 
 bool KinematicsInterfaceIKFast::calculate_frame_difference(
-  const Eigen::Matrix<double, 7, 1> & x_a, const Eigen::Matrix<double, 7, 1> & x_b, double dt,
+  Eigen::Matrix<double, 7, 1> & x_a, Eigen::Matrix<double, 7, 1> & x_b, double dt,
   Eigen::Matrix<double, 6, 1> & delta_x)
 {
   if (dt <= 0.0)
